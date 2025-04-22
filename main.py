@@ -32,7 +32,7 @@ def get_iss_location():
         timestamp = r['timestamp']
         # convert timestamp to human readable date and time (out of epoch)
         dt_obj = datetime.datetime.fromtimestamp(timestamp)
-        dtime = dt_obj.strftime('%Y-%m-%d-%H:%M:%S')
+        dtime = dt_obj.strftime('%m-%d-%Y @ %I:%M:%S %p UTC')  # Updated format to month-date-year @ time AM/PM
 
         # get longitude and latitude
         long = r['iss_position']['longitude']
@@ -68,7 +68,7 @@ def write_to_mongo(dtime, long, lat):
         db = client['ync5ad']
         collection = db['locations']
         collection.insert_one({'timestamp': dtime, 'longitude': long, 'latitude': lat})
-        logger.info('Output written to MongoDB')
+        logger.info('Output successfully written to MongoDB')
     except Exception as e:
         logger.error(e)
         exit(1)
